@@ -15,7 +15,7 @@ namespace ToDoList.Controllers
       return View(allEmployees);
     }
 
-    [HttpGet("/categories/new")]
+    [HttpGet("/employees/new")]
     public ActionResult New()
     {
       return View();

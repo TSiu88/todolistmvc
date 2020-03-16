@@ -6,12 +6,13 @@ namespace ToDoList.Models
 {
   public class Item
   {
-    public int CategoryId { get; set; }
+
+    public int Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public DateTime Due { get; set; }
     public bool IsComplete { get; set; }
-    public int Id { get; set; }
+    public int CategoryId { get; set; }
 
     public Item(string title, string description, DateTime due, int category)
     {

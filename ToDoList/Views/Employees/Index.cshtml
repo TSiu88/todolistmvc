@@ -13,7 +13,7 @@
 
 @foreach (Employee employee in Model)
 {
-  <li>@Html.ActionLink($"{employee.Name}", "Details", new { id = employee.CategoryId })</li>
+  <li>@Html.ActionLink($"{employee.Name}", "Details", new { id = employee.Id })</li>
 }
 
 <p>@Html.ActionLink("Add new employee", "Create")</p>

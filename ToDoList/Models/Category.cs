@@ -10,6 +10,8 @@ namespace ToDoList.Models
     public string Name { get; set; }
     public string Description { get; set; }
 
+    public List<Item> Items { get; set; }
+
     public Category(string categoryName, string description)
     {
       Name = categoryName;

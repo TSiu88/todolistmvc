@@ -23,9 +23,9 @@ namespace ToDoList.Controllers
     }
 
     [HttpPost("/categories")]
-    public ActionResult Create(string categoryName, string description)
+    public ActionResult Create(string name, string description)
     {
-      Category newCategory = new Category(categoryName, description);
+      Category newCategory = new Category(name, description);
       newCategory.Save();
       return RedirectToAction("Index");
     }
@@ -33,12 +33,14 @@ namespace ToDoList.Controllers
     [HttpGet("/categories/{id}")]
     public ActionResult Show(int id)
     {
-      Dictionary<string, object> model = new Dictionary<string, object>();
+      // Dictionary<string, object> model = new Dictionary<string, object>();
+
       Category selectedCategory = Category.Find(id);
-      List<Item> categoryItems = Item.FindForCategory(id);
-      model.Add("category", selectedCategory);
-      model.Add("items", categoryItems);
-      return View(model);
+      selectedCategory.Items = Item.FindForCategory(id);
+      // List<Item> categoryItems = Item.FindForCategory(id);
+      // model.Add("category", selectedCategory);
+      // model.Add("items", categoryItems);
+      return View(selectedCategory);
     }
 
     // This one creates new Items within a given Category, not new Categories:
