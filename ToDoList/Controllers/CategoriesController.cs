@@ -33,13 +33,8 @@ namespace ToDoList.Controllers
     [HttpGet("/categories/{id}")]
     public ActionResult Show(int id)
     {
-      // Dictionary<string, object> model = new Dictionary<string, object>();
-
       Category selectedCategory = Category.Find(id);
       selectedCategory.Items = Item.FindForCategory(id);
-      // List<Item> categoryItems = Item.FindForCategory(id);
-      // model.Add("category", selectedCategory);
-      // model.Add("items", categoryItems);
       return View(selectedCategory);
     }
 
@@ -55,6 +50,13 @@ namespace ToDoList.Controllers
       model.Add("items", categoryItems);
       model.Add("category", foundCategory);
       return View("Show", model);
+    }
+
+    [HttpPost("/categories/{id}/delete")]
+    public ActionResult Delete(int id)
+    {
+      Category.Delete(id);
+      return RedirectToAction("Index");
     }
   }
 }

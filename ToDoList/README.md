@@ -2,9 +2,11 @@
 
 - Group Members: Andrew Philpott, Tiffany Siu, Adela Darmansyah
 - To Do List/Project Management Project
+  - Currently not working
 - SQL Practice
+  - Researched how to not need to reinstall whenever start up MySQL after computer has been shut down
 - Help answer questions for the new cohort
-- Struggles: MySQL Workbench (always gave the same error: fail to connect to local server; must reinstall prior to use), Discord/Connection issues
+- Struggles: MySQL Workbench (always gave the same error: fail to connect to local server; must reinstall prior to use), Discord/Connection issues, understanding databases for the first day, data structure and placement of methods within classes/controllers, routes using razor link extensions,
 
 ## Notes
 
