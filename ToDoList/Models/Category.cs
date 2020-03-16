@@ -6,17 +6,14 @@ namespace ToDoList.Models
 {
   public class Category
   {
-    // private static List<Category> _instances = new List<Category> { };
     public int Id { get; set; }
     public string Name { get; set; }
     public string Description { get; set; }
-    public List<Item> Items { get; set; }
 
     public Category(string categoryName, string description)
     {
       Name = categoryName;
       Description = description;
-      Items = new List<Item> { };
     }
     public Category(string categoryName, string description, int categoryId)
     {
@@ -24,36 +21,29 @@ namespace ToDoList.Models
       Description = description;
       Id = categoryId;
     }
-    public List<Item> GetCompletedItems()
+
+    public static List<Category> GetAll()
     {
-      List<Item> allItems = new List<Item> { };
+      List<Category> allCategories = new List<Category> { };
       MySqlConnection conn = DB.Connection();
       conn.Open();
       MySqlCommand cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM items WHERE Id = @thisId AND IsComplete = true";
-      MySqlParameter thisId = new MySqlParameter();
-      thisId.ParameterName = "@thisId";
-      thisId.Value = Id;
-      cmd.Parameters.Add(thisId);
-
+      cmd.CommandText = @"SELECT * FROM categories;";
       MySqlDataReader rdr = cmd.ExecuteReader() as MySqlDataReader;
       while (rdr.Read())
       {
-        int itemId = rdr.GetInt32(0);
-        string itemTitle = rdr.GetString(1);
-        string itemDescription = rdr.GetString(2);
-        DateTime itemDue = rdr.GetDateTime(3);
-        int itemCategory = rdr.GetInt32(4);
-        bool itemComplete = rdr.GetBoolean(5);
-        Item newItem = new Item(itemTitle, itemDescription, itemDue, itemCategory, itemComplete, itemId);
-        allItems.Add(newItem);
+        int categoryID = rdr.GetInt32(0);
+        string categoryName = rdr.GetString(1);
+        string categoryDescription = rdr.GetString(2);
+        Category newcategory = new Category(categoryName, categoryDescription, categoryID);
+        allCategories.Add(newcategory);
       }
       conn.Close();
       if (conn != null)
       {
         conn.Dispose();
       }
-      return allItems;
+      return allCategories;
     }
 
     public void Save()
@@ -125,5 +115,18 @@ namespace ToDoList.Models
       return foundCategory;
     }
 
+    // public void AddItem(Item item)
+    // {
+    //   MySqlConnection conn = DB.Connection();
+    //   conn.Open();
+    //   var cmd = conn.CreateCommand() as MySqlCommand;
+    //   cmd.CommandText = @"Insert into categories () * FROM categories WHERE id = @thisId;";
+    //   MySqlParameter thisId = new MySqlParameter();
+    //   thisId.ParameterName = "@thisId";
+    //   thisId.Value = id;
+    //   cmd.Parameters.Add(thisId);
+
+    //   @"INSERT INTO items (title, description, due, category, complete) VALUES (@ItemTitle, @ItemDescription, @ItemDue, @ItemCategory, @ItemComplete);";
+    // }
   }
 }

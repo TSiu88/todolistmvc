@@ -5,17 +5,25 @@
 @model ToDoList.Models.Employees
 
 <h4>Add a new employee</h4>
-@using (Html.BeginForm())
-{
-    @Html.LabelFor(model => model.Name)
-    @Html.TextBoxFor(model => model.Name)
 
-    @Html.LabelFor(model => model.Developer)
-    @Html.TextBoxFor(model => model.Developer)
+<form action="/employees" method="post">
+    <label for="employeeName">Employee's Name:</label>
+    <input type="text" name="employeeName" id="employeeName"><br>
+    <input type="radio" type="number" value="1" id="front" name="employeeDeveloper"/>FrontEnd<br/>
+    <input type="radio" type="number" value="2" id="back" name="employeeDeveloper"/>BackEnd<br/>
+    <input type="radio" type="number" value="3" id="full" name="employeeDeveloper"/>FullStack<br/>
 
-    @Html.LabelFor(model => model.EmployeeId)
-    @Html.TextBoxFor(model => model.EmployeeId)
+@* 
+  <label for="employeeName">Employee's Name:</label>
+  <input type="text" name="employeeName" id="employeeName">
+  <br>
+  <label for="employeeDeveloper">Software Developer Type:</label>
+  <input type="number" name="employeeDeveloper" id="employeeDeveloper">
+  <br>
+  <label for="employeeDeveloper">Software Developer Type:</label>
+  <input type="number" name="employeeDeveloper" id="employeeDeveloper">
+  <br> *@
+  <button type="submit">Add new employee</button>
+</form>
 
-    <input type="submit" value="Add new employee" />
-}
 <p>@Html.ActionLink("Show all employees", "Index")</p>

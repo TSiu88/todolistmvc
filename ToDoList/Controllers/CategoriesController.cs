@@ -3,6 +3,7 @@ using ToDoList.Models;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace ToDoList.Controllers
 {
@@ -22,9 +23,10 @@ namespace ToDoList.Controllers
     }
 
     [HttpPost("/categories")]
-    public ActionResult Create(string categoryName)
+    public ActionResult Create(string categoryName, string description)
     {
-      Category newCategory = new Category(categoryName);
+      Category newCategory = new Category(categoryName, description);
+      newCategory.Save();
       return RedirectToAction("Index");
     }
 
@@ -33,7 +35,7 @@ namespace ToDoList.Controllers
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
       Category selectedCategory = Category.Find(id);
-      List<Item> categoryItems = selectedCategory.Items;
+      List<Item> categoryItems = Item.FindForCategory(id);
       model.Add("category", selectedCategory);
       model.Add("items", categoryItems);
       return View(model);
@@ -41,14 +43,13 @@ namespace ToDoList.Controllers
 
     // This one creates new Items within a given Category, not new Categories:
     [HttpPost("/categories/{categoryId}/items")]
-    public ActionResult Create(int categoryId, string itemDescription)
+    public ActionResult Create(int categoryId, string itemTitle, string itemDescription, DateTime due)
     {
       Dictionary<string, object> model = new Dictionary<string, object>();
       Category foundCategory = Category.Find(categoryId);
-      Item newItem = new Item(itemDescription);
+      Item newItem = new Item(itemTitle, itemDescription, due, categoryId);
       newItem.Save();    // New code
-      foundCategory.AddItem(newItem);
-      List<Item> categoryItems = foundCategory.Items;
+      List<Item> categoryItems = Item.FindForCategory(categoryId);
       model.Add("items", categoryItems);
       model.Add("category", foundCategory);
       return View("Show", model);

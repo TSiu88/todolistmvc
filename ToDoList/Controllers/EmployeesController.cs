@@ -14,5 +14,11 @@ namespace ToDoList.Controllers
       List<Employee> allEmployees = Employee.GetAll();
       return View(allEmployees);
     }
+
+    [HttpGet("/categories/new")]
+    public ActionResult New()
+    {
+      return View();
+    }
   }
 }

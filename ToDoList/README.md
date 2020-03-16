@@ -3,7 +3,8 @@
 - Group Members: Andrew Philpott, Tiffany Siu, Adela Darmansyah
 - To Do List/Project Management Project
 - SQL Practice
-- Struggles: MySQL Workbench (always gave the same error: fail to connect to local server; must reinstall prior to use)
+- Help answer questions for the new cohort
+- Struggles: MySQL Workbench (always gave the same error: fail to connect to local server; must reinstall prior to use), Discord/Connection issues
 
 ## Notes
 
@@ -52,32 +53,31 @@ tables:
 categories
 items
 employees
-categoryitems
 employeeitems
 
-CategoryItems
-CategoryId ItemId
-1 1
-1 2
-1 3
-2 4
-1 5
+Categories
+CategoryId Name Description
+1 Front-end UI-design
+2 Back-end Business Logic
+3 ...
 
 Items
-ItemId Title Desc Due CategoryId Complete
-1
+ItemId Title Description Due CategoryId Complete
+1 Class-A Code-class-A 3/16/20 2 false
 2
 3
 
 Employee
-Id EmployeeId Name Developer ItemList
+Id Name Developer
+1 Aname Front-end
+2 ...
 
 EmployeeItems
 Id, EmployeeId, ItemId
-EmployeeId ItemId
-1 1
-2 1
-3 1
+Id EmployeeId ItemId
+1 1 1
+2 1 2
+3 2 1
 4
 
 SELECT \*

@@ -46,6 +46,7 @@ namespace ToDoList.Models
         return descriptionEquality;
       }
     }
+    //Gets all items
     public static List<Item> GetAll()
     {
       List<Item> allItems = new List<Item> { };
@@ -84,6 +85,44 @@ namespace ToDoList.Models
       {
         conn.Dispose();
       }
+    }
+    //Gets all items for a specific category
+    public static List<Item> FindForCategory(int id)
+    {
+      List<Item> allItems = new List<Item> { };
+      MySqlConnection conn = DB.Connection();
+      conn.Open();
+      var cmd = conn.CreateCommand() as MySqlCommand;
+      cmd.CommandText = @"SELECT * FROM items WHERE categoryId = @thisCategory;";
+      MySqlParameter thisCategory = new MySqlParameter();
+      thisCategory.ParameterName = "@thisCategory";
+      thisCategory.Value = id;
+      cmd.Parameters.Add(thisCategory);
+      var rdr = cmd.ExecuteReader() as MySqlDataReader;
+      int itemId = 0;
+      string itemTitle = "";
+      string itemDescription = "";
+      DateTime itemDue = DateTime.MinValue;
+      int itemCategory = 0;
+      bool itemComplete = false;
+      while (rdr.Read())
+      {
+        itemId = rdr.GetInt32(0);
+        itemTitle = rdr.GetString(1);
+        itemDescription = rdr.GetString(2);
+        itemDue = rdr.GetDateTime(3);
+        itemCategory = rdr.GetInt32(4);
+        itemComplete = rdr.GetBoolean(5);
+        Item newItem = new Item(itemTitle, itemDescription, itemDue, itemCategory, itemComplete, itemId);
+        allItems.Add(newItem);
+      }
+
+      conn.Close();
+      if (conn != null)
+      {
+        conn.Dispose();
+      }
+      return allItems;
     }
 
     public static Item Find(int id)
