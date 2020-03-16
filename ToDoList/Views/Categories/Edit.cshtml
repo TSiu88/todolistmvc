@@ -10,7 +10,7 @@
 
 @using (Html.BeginForm())
 {
-    @Html.HiddenFor(model => model.CategoryId)
+    @Html.HiddenFor(model => model.Id)
 
     @Html.LabelFor(model => model.Name)
     @Html.EditorFor(model => model.Name)

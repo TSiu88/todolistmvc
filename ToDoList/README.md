@@ -1,3 +1,10 @@
+## Pair Program WFH Summary
+
+- Group Members: Andrew Philpott, Tiffany Siu, Adela Darmansyah
+- To Do List/Project Management Project
+- SQL Practice
+- Struggles: MySQL Workbench (always gave the same error: fail to connect to local server; must reinstall prior to use)
+
 ## Notes
 
 Tasks? Categories, items - Task due
@@ -34,7 +41,7 @@ what kind of profession values do we want to have?
 Front end developer
 back end developer
 senior full stack developer
-business process
+business processs
 
 Categories
 Create Item. This item must match
