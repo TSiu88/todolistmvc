@@ -6,22 +6,30 @@ namespace ToDoList.Models
 {
   public class Item
   {
-    public int ItemId { get; set; }
+    public int CategoryId { get; set; }
+    public string Title { get; set; }
     public string Description { get; set; }
     public DateTime Due { get; set; }
     public bool IsComplete { get; set; }
-    public int CategoryId { get; set; }
-    public virtual Category Category { get; set; }
     public int Id { get; set; }
 
-    public Item(string description)
+    public Item(string title, string description, DateTime due, int category)
     {
+      Title = title;
       Description = description;
+      Due = due;
+      CategoryId = category;
+      IsComplete = false;
     }
-    public Item(string description, int itemId)
+
+    public Item(string title, string description, DateTime due, int category, bool complete, int itemId)
     {
       Id = itemId;
+      Title = title;
       Description = description;
+      Due = due;
+      CategoryId = category;
+      IsComplete = complete;
     }
 
     public override bool Equals(System.Object otherItem)
@@ -49,8 +57,12 @@ namespace ToDoList.Models
       while (rdr.Read())
       {
         int itemId = rdr.GetInt32(0);
-        string itemDescription = rdr.GetString(1);
-        Item newItem = new Item(itemDescription, itemId);
+        string itemTitle = rdr.GetString(1);
+        string itemDescription = rdr.GetString(2);
+        DateTime itemDue = rdr.GetDateTime(3);
+        int itemCategory = rdr.GetInt32(4);
+        bool itemComplete = rdr.GetBoolean(5);
+        Item newItem = new Item(itemTitle, itemDescription, itemDue, itemCategory, itemComplete, itemId);
         allItems.Add(newItem);
       }
       conn.Close();
@@ -79,20 +91,28 @@ namespace ToDoList.Models
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
-      cmd.CommandText = @"SELECT * FROM `items` WHERE id = @thisId;";
+      cmd.CommandText = @"SELECT * FROM items WHERE id = @thisId;";
       MySqlParameter thisId = new MySqlParameter();
       thisId.ParameterName = "@thisId";
       thisId.Value = id;
       cmd.Parameters.Add(thisId);
       var rdr = cmd.ExecuteReader() as MySqlDataReader;
       int itemId = 0;
+      string itemTitle = "";
       string itemDescription = "";
+      DateTime itemDue = DateTime.MinValue;
+      int itemCategory = 0;
+      bool itemComplete = false;
       while (rdr.Read())
       {
         itemId = rdr.GetInt32(0);
-        itemDescription = rdr.GetString(1);
+        itemTitle = rdr.GetString(1);
+        itemDescription = rdr.GetString(2);
+        itemDue = rdr.GetDateTime(3);
+        itemCategory = rdr.GetInt32(4);
+        itemComplete = rdr.GetBoolean(5);
       }
-      Item foundItem = new Item(itemDescription, itemId);
+      Item foundItem = new Item(itemTitle, itemDescription, itemDue, itemCategory, itemComplete, itemId);
       conn.Close();
       if (conn != null)
       {
@@ -101,23 +121,42 @@ namespace ToDoList.Models
       return foundItem;
     }
 
+
     public void Save()
     {
       MySqlConnection conn = DB.Connection();
       conn.Open();
       var cmd = conn.CreateCommand() as MySqlCommand;
 
-      // Begin new code
+      cmd.CommandText = @"INSERT INTO items (title, description, due, category, complete) VALUES (@ItemTitle, @ItemDescription, @ItemDue, @ItemCategory, @ItemComplete);";
 
-      cmd.CommandText = @"INSERT INTO items (description) VALUES (@ItemDescription);";
+      MySqlParameter title = new MySqlParameter();
+      title.ParameterName = "@ItemTitle";
+      title.Value = this.Title;
+      cmd.Parameters.Add(title);
+
       MySqlParameter description = new MySqlParameter();
       description.ParameterName = "@ItemDescription";
       description.Value = this.Description;
       cmd.Parameters.Add(description);
+
+      MySqlParameter due = new MySqlParameter();
+      due.ParameterName = "@ItemDue";
+      due.Value = this.Due;
+      cmd.Parameters.Add(due);
+
+      MySqlParameter category = new MySqlParameter();
+      category.ParameterName = "@ItemCategory";
+      category.Value = this.CategoryId;
+      cmd.Parameters.Add(category);
+
+      MySqlParameter complete = new MySqlParameter();
+      complete.ParameterName = "@ItemComplete";
+      complete.Value = this.IsComplete;
+      cmd.Parameters.Add(complete);
+
       cmd.ExecuteNonQuery();
       Id = (int)cmd.LastInsertedId;
-
-      // End new code
 
       conn.Close();
       if (conn != null)

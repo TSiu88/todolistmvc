@@ -1,0 +1,21 @@
+@{
+  Layout = "_Layout";
+}
+
+@model ToDoList.Models.Employees
+
+<h4>Add a new employee</h4>
+@using (Html.BeginForm())
+{
+    @Html.LabelFor(model => model.Name)
+    @Html.TextBoxFor(model => model.Name)
+
+    @Html.LabelFor(model => model.Developer)
+    @Html.TextBoxFor(model => model.Developer)
+
+    @Html.LabelFor(model => model.EmployeeId)
+    @Html.TextBoxFor(model => model.EmployeeId)
+
+    <input type="submit" value="Add new employee" />
+}
+<p>@Html.ActionLink("Show all employees", "Index")</p>

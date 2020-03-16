@@ -17,12 +17,14 @@ Task/Item
 
 - Title
 - Description
-- list of categories task falls into
 - Due date
+- CategoryID
 - Completed (bool)
+
 - Employees assigned to task
   -Type (1 step, 2 step process?) Process is completed after assigned to 2 different people
 - or can just have it possible to check off task when completed manually?
+- list of categories task falls into
 
 Employee
 
@@ -45,3 +47,48 @@ business processs
 
 Categories
 Create Item. This item must match
+
+tables:
+categories
+items
+employees
+categoryitems
+employeeitems
+
+CategoryItems
+CategoryId ItemId
+1 1
+1 2
+1 3
+2 4
+1 5
+
+Items
+ItemId Title Desc Due CategoryId Complete
+1
+2
+3
+
+Employee
+Id EmployeeId Name Developer ItemList
+
+EmployeeItems
+Id, EmployeeId, ItemId
+EmployeeId ItemId
+1 1
+2 1
+3 1
+4
+
+SELECT \*
+FROM Items
+Inner join categories
+on items.categoryId = categories.Id
+
+Select Id, Description, Title, Due, IsComplete
+From Items O
+Join CategoryItems I ON O.Id = I.itemId
+Where categoryId is equal to this id
+On
+select all items from (table) items where categoryID = this category id
+'
